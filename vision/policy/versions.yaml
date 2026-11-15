@@ -1,0 +1,62 @@
+versions:
+  v0:
+    mode: baseline
+    rules:
+      - R00
+      - R01_v0
+      - R02_v0
+      - R04_v0
+      - R05_v0
+      - R15_v0
+      - R18
+  v1:
+    mode: standard
+    rules:
+      - R00
+      - R01
+      - R02
+      - R04
+      - R05_v0
+      - R07
+      - R15_v0
+      - R16
+      - R18
+  v2:
+    mode: hardened
+    rules:
+      - R00
+      - R01
+      - R02
+      - R03
+      - R04
+      - R05
+      - R06
+      - R07
+      - R10
+      - R11
+      - R12
+      - R15_v0
+      - R16
+      - R17
+      - R18
+  v3:
+    mode: full
+    rules:
+      - R00
+      - R01
+      - R02
+      - R03
+      - R04
+      - R05
+      - R06
+      - R07
+      - R08
+      - R09
+      - R10
+      - R11
+      - R12
+      - R13
+      - R15
+      - R16
+      - R17
+      - R18

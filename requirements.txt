@@ -1,0 +1,14 @@
+langgraph
+langchain-core
+langchain-ollama
+pydantic
+PyYAML
+rich
+pytest
+requests
+matplotlib
+datasets
+fastapi
+uvicorn
+python-dotenv
+mcp

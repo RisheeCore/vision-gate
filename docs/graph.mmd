@@ -1,0 +1,30 @@
+---
+config:
+  flowchart:
+    curve: linear
+---
+graph TD;
+	__start__([<p>__start__</p>]):::first
+	plan(plan)
+	code(code)
+	policy_gate(policy_gate)
+	execute(execute)
+	reflect(reflect)
+	finalize(finalize)
+	__end__([<p>__end__</p>]):::last
+	__start__ -.-> code;
+	__start__ -.-> plan;
+	code -.-> finalize;
+	code -.-> policy_gate;
+	code -.-> reflect;
+	execute -.-> finalize;
+	execute -.-> reflect;
+	plan --> code;
+	policy_gate -.-> execute;
+	policy_gate -.-> finalize;
+	policy_gate -.-> reflect;
+	reflect --> code;
+	finalize --> __end__;
+	classDef default fill:#f2f0ff,line-height:1.2
+	classDef first fill-opacity:0
+	classDef last fill:#bfb6fc
