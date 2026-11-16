@@ -279,6 +279,9 @@ def api_remediate(req: CodeReq):
                 if not prov["ok"]:
                     last_err = "Fidelity gate failed; missing hazard IDs: " + str(prov["missing"])
                     continue
+                if want_set and not prov.get("preserved"):
+                    last_err = "Fidelity gate: nothing preserved - rewrite replaced the script"
+                    continue
                 cand = str(prop.get("code", "")).strip()
                 chk = check_systems_hardened(cand)
                 if chk["decision"] != "ALLOW":
@@ -290,6 +293,7 @@ def api_remediate(req: CodeReq):
                     final_pol = chk
                     sb_res = cand_sb
                     prov_report = prov
+                    last_err = ""
                     tier_used = "tier-1-venice-proposer"
                     engine_used = f"Venice ({(req.model or DEFAULT_MODEL)})"
                     break
