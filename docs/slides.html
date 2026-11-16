@@ -1,0 +1,63 @@
+<!doctype html>
+<html><head><meta charset=utf-8><title>VISION</title>
+<style>
+:root{--bg:#09090b;--fg:#fafafa;--mut:#a1a1aa;--grn:#22c55e;--bd:#27272a}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--fg);font-family:system-ui,sans-serif;height:100vh;overflow:hidden}
+.s{position:absolute;inset:0;padding:7vh 9vw;display:none;flex-direction:column;justify-content:center;gap:1.4rem}
+.s.on{display:flex}
+h1{font-size:3.4rem;line-height:1.1;letter-spacing:-.02em}
+h2{font-size:2.1rem;letter-spacing:-.01em;color:var(--grn)}
+p,li{font-size:1.18rem;line-height:1.55;color:var(--mut)}
+b,strong{color:var(--fg)}
+code{font-family:monospace;background:#18181b;border:1px solid var(--bd);padding:.1em .4em;border-radius:4px;color:#e4e4e7}
+ul{padding-left:1.2rem;display:flex;flex-direction:column;gap:.55rem}
+.k{display:flex;gap:2rem;margin-top:1rem}
+.k div{flex:1;border:1px solid var(--bd);border-radius:10px;padding:1rem 1.2rem;background:#0f0f13}
+.k .n{font-size:2.3rem;font-weight:700;color:var(--grn);font-family:monospace}
+.k .l{font-size:.8rem;color:var(--mut);text-transform:uppercase;letter-spacing:.07em}
+.tag{font-family:monospace;font-size:.78rem;color:var(--grn);letter-spacing:.16em;text-transform:uppercase}
+img{max-width:100%;max-height:52vh;border:1px solid var(--bd);border-radius:10px;background:#fff}
+#c{position:fixed;bottom:1.4rem;right:1.6rem;font-family:monospace;font-size:.8rem;color:#52525b}
+.note{font-size:.9rem;color:#71717a;border-left:2px solid var(--bd);padding-left:.8rem}
+</style></head><body>
+<section class=s><div class=tag>Capstone</div><h1>VISION</h1>
+<p><b>Very Intelligent System for Inspection, Optimization and Navigation</b></p>
+<p>Pre-execution policy gating with a sandboxed, verified self-healing loop.</p>
+<p class=note>Deterministic gate &middot; capability-dropped execution &middot; bounded repair &middot; measured escape rate</p></section>
+<section class=s><h2>The problem</h2>
+<ul><li>LLM output runs on the host <b>before</b> anyone audits it.</li><li>Linters read text; they do not model <b>behaviour</b>.</li><li>Reviewing every generated script by hand does not scale.</li></ul></section>
+<section class=s><h2>Three layers</h2>
+<ul><li><b>Layer 1</b> &mdash; deterministic AST policy engine. No network, no model.</li><li><b>Layer 2</b> &mdash; capability-dropped Docker sandbox.</li><li><b>Layer 3</b> &mdash; bounded self-heal loop, fail-closed.</li></ul>
+<p class=note>The key is used only for repair. Detection is never an LLM.</p></section>
+<section class=s><h2>Layer 1 &mdash; the gate</h2>
+<ul><li>19 rule families: parse, imports, builtins, path, destructive, resources, introspection, obfuscation, shell.</li><li>Versioned v0&ndash;v3, each strictly stronger.</li><li>Line-numbered findings, sub-millisecond, fully offline.</li></ul></section>
+<section class=s><h2>Layer 2 &mdash; the sandbox</h2>
+<ul><li><code>--read-only</code> root, <code>--cap-drop ALL</code>, no-new-privileges</li><li><code>--pids-limit</code>, <code>--ulimit</code>, <code>tmpfs noexec,nosuid,size</code></li><li><code>--network none</code>, uid 65534</li><li>15 tests, including two positive controls that prove the canary fires</li></ul></section>
+<section class=s><h2>Layer 3 &mdash; the loop</h2>
+<ul><li><code>code &rarr; gate &rarr; BLOCK &rarr; reflect &rarr; code</code></li><li>SHA repeat detection, <code>max_iters</code> budget</li><li>Budget exhausted &rarr; fail closed, never a silent pass</li></ul>
+<p class=note>Bounded, not open-ended.</p></section>
+<section class=s><h2>Fidelity gate</h2>
+<ul><li>Healed output is <b>re-audited</b>; not ALLOW &rarr; 503, not a bad answer.</li><li>Provenance diff: preserved / dropped / invented.</li><li>Side-by-side in the UI so the claim is inspectable.</li></ul></section>
+<section class=s><h2>Held-out results</h2>
+<div class=k>
+<div><div class=n>40.7%</div><div class=l>v0 block rate</div></div>
+<div><div class=n>248</div><div class=l>contained by Layer 2</div></div>
+<div><div class=n>27</div><div class=l>reached the canary</div></div>
+<div><div class=n>100%</div><div class=l>v3 block rate</div></div></div>
+<p class=note>464 held-out records, 29 held-out families x 15 mutators. Escapes measured against a live canary, not assumed.</p></section>
+<section class=s><h2>C1 &mdash; block rate by version</h2><img src=../reports/C1_block_rate_by_version.png></section>
+<section class=s><h2>C2 &mdash; per category</h2><img src=../reports/C2_category_block_rate.png></section>
+<section class=s><h2>Demo</h2>
+<ul><li>Tab 1 &mdash; 19 annotated flaws, block report, diff, provenance</li><li>Tab 2 &mdash; block, reflect, clean retry</li><li>Fallback: <code>vision.cli replay</code></li></ul></section>
+<section class=s><h2>Limitations</h2>
+<ul><li>Python only, single file. No PE/ELF, no C.</li><li>Obfuscation flagged, not reversed.</li><li>Ransomware hardened behaviourally; keys not recovered.</li><li>Heuristic coverage; family-level split.</li><li>Canary profile differs from strict profile.</li></ul></section>
+<section class=s><h2>Threats to validity</h2>
+<ul><li>Family-level split, not file-level independence.</li><li>Single annotator on the corpus.</li><li>FPR 0/63 &mdash; cite the Wilson upper bound, not the point estimate.</li><li>LLM repair can hallucinate; re-audit mitigates, does not eliminate.</li></ul></section>
+<div id=c></div>
+<script>
+const S=[...document.querySelectorAll('.s')];let i=0;const c=document.getElementById('c');
+function go(n){i=Math.max(0,Math.min(S.length-1,n));S.forEach((s,k)=>s.classList.toggle('on',k===i));c.textContent=(i+1)+' / '+S.length;}
+addEventListener('keydown',e=>{if(['ArrowRight','ArrowDown',' '].includes(e.key)){e.preventDefault();go(i+1)}if(['ArrowLeft','ArrowUp'].includes(e.key)){e.preventDefault();go(i-1)}});
+go(0);
+</script></body></html>

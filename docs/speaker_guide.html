@@ -1,0 +1,7 @@
+<h2>Member 2 — slides 5–7</h2>
+<h3>5 · Threat model (45s)</h3><div class=say>“Three adversaries: careless, prompt-injected, adaptive. The trust rule is the important part — LLM output and sandbox output are both untrusted, and attack snippets never run on the host.”</div>
+<h3>6 · Datasets (45s)</h3><div class=say>“72 seeds over 7 attack classes, 63 benign of which 23 are deliberately tricky, 464 held-out payloads after mutators. Split by family so a mutator variant never sits on both sides.”</div>
+<p class=t>Say “classes”, not “families”, on the first number. 72 is the family count.</p>
+<h3>7 · Red-team method (45s)</h3><div class=say>“60/40 tune and held-out. A bypass only counts if the payload actually works. M13 to M15 stay out of tuning. Then: attack, find bypass, add rule, re-measure.”</div>
+<div class=qa><b>“Why is 60/40 not 50/50?”</b> — “Tune needs enough to write rules; 40% held-out still gives 464 records and a tight interval.”</div>
+<div class=qa><b>“Who wrote the seeds?”</b> — “The team, by hand, from documented failure modes — not scraped malware.”</div>

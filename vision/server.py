@@ -215,7 +215,7 @@ def call_venice_json_proposer(code: str, want_ids: list[str], findings: list[dic
         headers={"Authorization": "Bearer " + key, "Content-Type": "application/json", "User-Agent": "VISION/3.0"},
         method="POST",
     )
-    with urllib.request.urlopen(req, timeout=30) as resp:
+    with urllib.request.urlopen(req, timeout=120) as resp:
         data = json.loads(resp.read().decode("utf-8"))
         return _parse_json_payload(data["choices"][0]["message"]["content"])
 
@@ -271,7 +271,7 @@ def api_remediate(req: CodeReq):
 
     has_key = bool(req.venice_api_key.strip() or _load_env_key())
     if req.use_llm and has_key and (req.model or DEFAULT_MODEL) != "local-synthesizer":
-        for attempt in range(1, 3):
+        for attempt in range(1, 4):
             attempts = attempt
             try:
                 prop = call_venice_json_proposer(req.code, want_ids, findings, (req.model or DEFAULT_MODEL), req.venice_api_key, last_err)
@@ -327,6 +327,7 @@ def api_remediate(req: CodeReq):
         "engine_used": engine_used,
         "attempts": attempts,
         "initial_policy": init_pol,
+        "last_err": last_err,
         "provenance": prov_report,
         "rewritten_code": healed_code,
         "final_policy": final_pol,
