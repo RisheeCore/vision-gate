@@ -1,4 +1,4 @@
-# VISION — Self-Healing Coding Agent with Defense-in-Depth Safety
+# VISION — Very Intelligent System for Inspection, Optimization and Navigation
 
 A LangGraph multi-agent coding system with two independent safety layers:
 1. **Layer 1 (AST Policy Engine):** Deterministic static analysis (`v0`..`v3`, rules `R00`..`R18`, median latency `11.65 ms`).
